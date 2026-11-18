@@ -3,11 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>15% de Descuento - Arquitectura</title>
+  <title>15% de Descuento - Samboro Arquitectura</title>
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+    
     body {
-      background: linear-gradient(135deg, #181c20 0%, #2b3540 100%);
+      /* Imagen de fondo con superposición oscura para legibilidad */
+      background-image: linear-gradient(rgba(18, 22, 26, 0.72), rgba(18, 22, 26, 0.82)), 
+                        url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNXDmuPHbg7AmeAvNnlkTssPJ-dTICoY5d_X8872ieNKD9PkACIVhYgBTE&s=10');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -15,15 +22,30 @@
       margin: 0;
       padding: 16px;
     }
+
     .card {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(6px);
       padding: 28px 24px;
       border-radius: 16px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
       width: 100%;
       max-width: 420px;
       text-align: center;
     }
+
+    /* Estilo del Logo */
+    .logo-container {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #eef0f2;
+    }
+    .logo-samboro {
+      max-width: 185px;
+      height: auto;
+      display: inline-block;
+    }
+
     .badge {
       display: inline-block;
       background: #e8f5e9;
@@ -176,6 +198,11 @@
 <body>
 
   <div class="card">
+    <!-- LOGO DE SAMBORO -->
+    <div class="logo-container">
+      <img src="https://www.samboro.com/wp-content/uploads/2024/11/logo-samboro-para-menu-web.png" alt="Logo Samboro" class="logo-samboro">
+    </div>
+
     <!-- VISTA 1: ENCUESTA BREVE + CAPTURA -->
     <div id="pantalla-formulario">
       <span class="badge">Beneficio Exclusivo</span>
@@ -248,10 +275,10 @@
     const IMAGEN_VER_URL = `https://lh3.googleusercontent.com/d/${DRIVE_FILE_ID}`;
     const IMAGEN_DESCARGA_URL = `https://drive.google.com/uc?export=download&id=${DRIVE_FILE_ID}`;
 
-    const TELEFONO_ASESOR = "50247692176"; // Código de país + número del asesor (sin + ni espacios)
+    const TELEFONO_ASESOR = "50255551234"; // Código de país + número del asesor (sin + ni espacios)
     
     // Fecha límite: 30 de noviembre de 2026 a las 23:59:59
-    const FECHA_LIMITE = new Date(2026, 10, 30, 23, 59, 59).getTime(); // Nota: En JS noviembre es el mes 10 (0=Enero)
+    const FECHA_LIMITE = new Date(2026, 10, 30, 23, 59, 59).getTime();
     // ==========================================
 
     const form = document.getElementById("formDescuento");
@@ -314,7 +341,7 @@
         document.getElementById("segundos").textContent = segundos < 10 ? "0" + segundos : segundos;
       }
 
-      actualizarReloj(); // Ejecuta inmediatamente sin esperar 1 segundo
+      actualizarReloj();
       const intervalo = setInterval(actualizarReloj, 1000);
     }
   </script>
