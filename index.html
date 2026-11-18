@@ -85,12 +85,41 @@
       background: #fff8e1;
       border: 1.5px dashed #f59e0b;
       color: #b45309;
-      padding: 10px;
+      padding: 12px 8px;
       border-radius: 10px;
       margin-bottom: 14px;
     }
-    .timer-box span { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-    #contador { font-size: 30px; font-weight: 900; letter-spacing: 2px; margin-top: 2px; }
+    .timer-box span.titulo-timer { 
+      display: block; 
+      font-size: 11px; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      margin-bottom: 6px;
+    }
+    .grid-contador {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .bloque-tiempo {
+      background: #ffffff;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 6px 2px;
+    }
+    .bloque-tiempo strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 900;
+      color: #b45309;
+      line-height: 1.1;
+    }
+    .bloque-tiempo small {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #78350f;
+    }
 
     .promo-img {
       width: 100%;
@@ -177,13 +206,18 @@
       </form>
     </div>
 
-    <!-- VISTA 2: CUENTA REGRESIVA + IMAGEN + ASESOR WHATSAPP -->
+    <!-- VISTA 2: CUENTA REGRESIVA AL 30 NOV + IMAGEN + ASESOR WHATSAPP -->
     <div id="pantalla-promo">
       <h2>🎉 ¡Cupón Desbloqueado!</h2>
       
-      <div class="timer-box">
-        <span>Válido para captura o descarga en:</span>
-        <div id="contador">05:00</div>
+      <div class="timer-box" id="contenedorTimer">
+        <span class="titulo-timer">Promoción válida hasta el 30 de noviembre. Quedan:</span>
+        <div class="grid-contador" id="gridContador">
+          <div class="bloque-tiempo"><strong id="dias">00</strong><small>Días</small></div>
+          <div class="bloque-tiempo"><strong id="horas">00</strong><small>Horas</small></div>
+          <div class="bloque-tiempo"><strong id="minutos">00</strong><small>Min</small></div>
+          <div class="bloque-tiempo"><strong id="segundos">00</strong><small>Seg</small></div>
+        </div>
       </div>
 
       <img id="imagenCupon" class="promo-img" src="" alt="Cupón 15% de Descuento">
@@ -196,7 +230,7 @@
         <a id="btnWhatsapp" class="btn-whatsapp" href="#" target="_blank">
           💬 Canjear con un Asesor por WhatsApp
         </a>
-        <a id="btnDescargar" class="btn-descargar" href="" download="Cupon_15_Descuento.jpg">
+        <a id="btnDescargar" class="btn-descargar" href="" target="_blank">
           ⬇️ Descargar Imagen del Cupón
         </a>
       </div>
@@ -208,9 +242,16 @@
     // CONFIGURACIÓN
     // ==========================================
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxN6Fqo__uUZkf3yjCbnOZ7wOYoLg5GrZ2WmS3aG1mcAFz22Zc56TOVgUNbbEVFJEnwTg/exec";
-    const IMAGEN_PROMOCION_URL = "promocion.jpg"; // Nombre de tu imagen en la misma carpeta
+    
+    // ID de tu archivo en Google Drive ya configurado:
+    const DRIVE_FILE_ID = "1-a6Q1gdUY49cUFNgpA5iQ6DDdRy5d8jP";
+    const IMAGEN_VER_URL = `https://lh3.googleusercontent.com/d/${DRIVE_FILE_ID}`;
+    const IMAGEN_DESCARGA_URL = `https://drive.google.com/uc?export=download&id=${DRIVE_FILE_ID}`;
+
     const TELEFONO_ASESOR = "50255551234"; // Código de país + número del asesor (sin + ni espacios)
-    const MINUTOS_CUENTA_REGRESIVA = 5;
+    
+    // Fecha límite: 30 de noviembre de 2026 a las 23:59:59
+    const FECHA_LIMITE = new Date(2026, 10, 30, 23, 59, 59).getTime(); // Nota: En JS noviembre es el mes 10 (0=Enero)
     // ==========================================
 
     const form = document.getElementById("formDescuento");
@@ -235,41 +276,46 @@
         })
       })
       .finally(() => {
-        // 2. Configurar imagen y descarga
-        document.getElementById("imagenCupon").src = IMAGEN_PROMOCION_URL;
-        document.getElementById("btnDescargar").href = IMAGEN_PROMOCION_URL;
+        // 2. Configurar imagen desde Google Drive y descarga
+        document.getElementById("imagenCupon").src = IMAGEN_VER_URL;
+        document.getElementById("btnDescargar").href = IMAGEN_DESCARGA_URL;
 
         // 3. Configurar enlace de WhatsApp personalizado con el sector elegido
         const mensajeWA = `Hola, acabo de desbloquear mi cupón del 15% de descuento. Me dedico al sector de: ${sectorSeleccionado}. Quisiera asesoría.`;
         const urlWA = `https://wa.me/${TELEFONO_ASESOR}?text=${encodeURIComponent(mensajeWA)}`;
         document.getElementById("btnWhatsapp").href = urlWA;
 
-        // 4. Cambiar de pantalla e iniciar reloj
+        // 4. Cambiar de pantalla e iniciar reloj hacia el 30 de noviembre
         document.getElementById("pantalla-formulario").style.display = "none";
         document.getElementById("pantalla-promo").style.display = "block";
-        iniciarTemporizador(MINUTOS_CUENTA_REGRESIVA * 60);
+        iniciarTemporizadorFechaLimite();
       });
     });
 
-    function iniciarTemporizador(segundosTotales) {
-      const display = document.getElementById("contador");
-      let tiempo = segundosTotales;
+    function iniciarTemporizadorFechaLimite() {
+      function actualizarReloj() {
+        const ahora = new Date().getTime();
+        const diferencia = FECHA_LIMITE - ahora;
 
-      const intervalo = setInterval(() => {
-        let minutos = Math.floor(tiempo / 60);
-        let segundos = tiempo % 60;
-
-        minutos = minutos < 10 ? "0" + minutos : minutos;
-        segundos = segundos < 10 ? "0" + segundos : segundos;
-
-        display.textContent = `${minutos}:${segundos}`;
-
-        if (--tiempo < 0) {
+        if (diferencia <= 0) {
           clearInterval(intervalo);
-          display.textContent = "¡TIEMPO AGOTADO!";
-          display.style.color = "#dc2626";
+          document.getElementById("contenedorTimer").innerHTML = "<strong style='color:#dc2626; font-size:16px;'>¡PROMOCIÓN FINALIZADA!</strong>";
+          return;
         }
-      }, 1000);
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        document.getElementById("dias").textContent = dias < 10 ? "0" + dias : dias;
+        document.getElementById("horas").textContent = horas < 10 ? "0" + horas : horas;
+        document.getElementById("minutos").textContent = minutos < 10 ? "0" + minutos : minutos;
+        document.getElementById("segundos").textContent = segundos < 10 ? "0" + segundos : segundos;
+      }
+
+      actualizarReloj(); // Ejecuta inmediatamente sin esperar 1 segundo
+      const intervalo = setInterval(actualizarReloj, 1000);
     }
   </script>
 
