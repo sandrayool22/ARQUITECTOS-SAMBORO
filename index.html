@@ -16,19 +16,16 @@
 <section class="section">
     <div class="container">
 
-        <div class="has-text-centered mb-6">
+        <div class="has-text-centered mb-5">
             <h1 class="title is-2 has-text-danger">
                 SAMBORO
             </h1>
 
-            <h2 class="subtitle is-5">
+            <h2 class="subtitle">
                 Registro de visitantes
             </h2>
 
-            <p class="has-text-grey">
-                Agradecemos tu visita. Completa la siguiente información
-                para brindarte una mejor atención.
-            </p>
+            <p>¡Bienvenido! Queremos brindarte una mejor atención.</p>
         </div>
 
         <div class="columns is-centered">
@@ -39,13 +36,12 @@
                     <form id="formulario">
 
                         <div class="field">
-                            <label class="label">Nombre completo</label>
+                            <label class="label">Nombre</label>
                             <div class="control">
                                 <input class="input"
                                 type="text"
                                 name="nombre"
-                                placeholder="Ingresa tu nombre"
-                                maxlength="100">
+                                placeholder="Ingresa tu nombre">
                             </div>
                         </div>
 
@@ -57,7 +53,6 @@
                                 name="telefono"
                                 placeholder="Ej. 55555555"
                                 pattern="[0-9+() -]{8,20}"
-                                maxlength="20"
                                 required>
                             </div>
                         </div>
@@ -68,16 +63,16 @@
                                 <div class="select is-fullwidth">
                                     <select name="tienda" required>
                                         <option value="">Selecciona una tienda</option>
-                                        <option value="SCB">San Cristóbal</option>
-                                        <option value="CL">Centro Logístico</option>
-                                        <option value="Zona 7">Zona 7</option>
-                                        <option value="Zona 9">Zona 9</option>
-                                        <option value="Zona 11">Zona 11</option>
-                                        <option value="Zona 17">Zona 17</option>
-                                        <option value="Villa Nueva">Villa Nueva</option>
-                                        <option value="Decocity">Decocity</option>
-                                        <option value="Viterra">Viterra</option>
-                                        <option value="Zona 7 Outlet">Zona 7 Outlet</option>
+                                        <option>San Cristóbal</option>
+                                        <option>Centro Logístico</option>
+                                        <option>Zona 7</option>
+                                        <option>Zona 9</option>
+                                        <option>Zona 11</option>
+                                        <option>Zona 17</option>
+                                        <option>Villa Nueva</option>
+                                        <option>Decocity</option>
+                                        <option>Viterra</option>
+                                        <option>Zona 7 Outlet</option>
                                     </select>
                                 </div>
                             </div>
@@ -89,11 +84,11 @@
                                 <div class="select is-fullwidth">
                                     <select name="motivo" required>
                                         <option value="">Selecciona una opción</option>
-                                        <option value="Compra">Compra</option>
-                                        <option value="Cotización">Cotización</option>
-                                        <option value="Consulta de productos">Consulta de productos</option>
-                                        <option value="Reclamo">Reclamo</option>
-                                        <option value="Otro">Otro</option>
+                                        <option>Compra</option>
+                                        <option>Cotización</option>
+                                        <option>Consulta de productos</option>
+                                        <option>Reclamo</option>
+                                        <option>Otro</option>
                                     </select>
                                 </div>
                             </div>
@@ -105,8 +100,7 @@
                                 <input class="input"
                                 type="text"
                                 name="producto"
-                                placeholder="Ej. Pisos, baños, fachaletas..."
-                                maxlength="150">
+                                placeholder="Ej. Pisos, baños, fachaletas...">
                             </div>
                         </div>
 
@@ -116,10 +110,9 @@
                                 name="consentimiento"
                                 value="si"
                                 required>
-
                                 Autorizo a Samboro a utilizar mis datos
-                                para fines de seguimiento comercial,
-                                conforme a su aviso de privacidad.
+                                para seguimiento comercial, conforme al
+                                aviso de privacidad.
                             </label>
                         </div>
 
@@ -133,16 +126,9 @@
 
                     </form>
 
-                    <div id="mensaje"
-                    class="notification is-hidden mt-4">
-                    </div>
+                    <div id="mensaje" class="notification is-hidden mt-4"></div>
 
                 </div>
-
-                <p class="has-text-grey has-text-centered is-size-7 mt-4">
-                    Samboro | Registro de visitantes
-                </p>
-
             </div>
         </div>
 
@@ -153,56 +139,13 @@
 
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxN6Fqo__uUZkf3yjCbnOZ7wOYoLg5GrZ2WmS3aG1mcAFz22Zc56TOVgUNbbEVFJEnwTg/exec";
 
-const FECHA_LIMITE = "2026-11-30";
-
 const formulario = document.getElementById("formulario");
 const boton = document.getElementById("btnEnviar");
 const mensaje = document.getElementById("mensaje");
 
-function fechaGuatemala() {
-    return new Intl.DateTimeFormat("en-CA", {
-        timeZone: "America/Guatemala",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-    }).format(new Date());
-}
-
-function verificarVigencia() {
-
-    if (fechaGuatemala() > FECHA_LIMITE) {
-
-        formulario.classList.add("is-hidden");
-
-        mensaje.className = "notification is-warning";
-        mensaje.textContent =
-            "El período de registro ha finalizado. " +
-            "Agradecemos tu interés en Samboro.";
-
-        return false;
-    }
-
-    return true;
-}
-
-verificarVigencia();
-
 formulario.addEventListener("submit", async function(e) {
 
     e.preventDefault();
-
-    if (!verificarVigencia()) return;
-
-    if (!formulario.reportValidity()) return;
-
-    if (URL_SCRIPT.includes("PEGA_AQUI")) {
-
-        mensaje.className = "notification is-danger";
-        mensaje.textContent =
-            "La conexión con el sistema todavía no está configurada.";
-
-        return;
-    }
 
     boton.classList.add("is-loading");
     boton.disabled = true;
@@ -221,8 +164,7 @@ formulario.addEventListener("submit", async function(e) {
 
         mensaje.className = "notification is-success mt-4";
         mensaje.textContent =
-            "Tu solicitud de registro fue enviada. " +
-            "Gracias por visitar Samboro.";
+            "¡Gracias! Tu registro ha sido enviado.";
 
         formulario.reset();
 
@@ -230,8 +172,7 @@ formulario.addEventListener("submit", async function(e) {
 
         mensaje.className = "notification is-danger mt-4";
         mensaje.textContent =
-            "No fue posible enviar tu registro. " +
-            "Por favor, intenta nuevamente.";
+            "No se pudo enviar el registro. Intenta nuevamente.";
 
     } finally {
 
