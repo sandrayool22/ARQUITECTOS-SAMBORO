@@ -1,1 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Obtén tu 15% de Descuento!</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+    body {
+      background: linear-gradient(135deg, #1f2328 0%, #2c3e50 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 15px;
+    }
+    .card {
+      background: #ffffff;
+      padding: 28px 22px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    h2 { margin: 0 0 10px; color: #1f2328; font-size: 24px; }
+    p.subtitulo { color: #555; font-size: 15px; margin-bottom: 20px; }
+    
+    /* Formulario */
+    label { display: block; text-align: left; font-weight: bold; color: #333; margin-bottom: 6px; font-size: 14px; }
+    input[type="tel"] {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 18px;
+      outline: none;
+    }
+    input[type="tel"]:focus { border-color: #25D366; }
+    
+    .btn-obtener {
+      width: 100%;
+      padding: 15px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+      transition: transform 0.1s;
+    }
+    .btn-obtener:active { transform: scale(0.98); }
+    .btn-obtener:disabled { background: #95d5b2; cursor: not-allowed; }
 
+    /* Pantalla de Promoción y Cuenta Regresiva */
+    #pantalla-promo { display: none; }
+    .timer-box {
+      background: #fff3cd;
+      border: 2px dashed #ff9800;
+      color: #d35400;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .timer-box span { display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+    #contador { font-size: 32px; font-weight: 900; letter-spacing: 2px; }
+    
+    .promo-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #eee;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .instruccion-captura {
+      background: #e8f5e9;
+      color: #1b5e20;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    .btn-descargar {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      background: #1f2328;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- VISTA 1: PREGUNTA Y CAPTURA -->
+    <div id="pantalla-formulario">
+      <h2>🎁 ¿Quieres obtener el 15% de descuento?</h2>
+      <p class="subtitulo">Ingresa tu número de teléfono para desbloquear tu cupón exclusivo al instante.</p>
+      
+      <form id="formDescuento">
+        <label for="telefono">Tu número de WhatsApp / Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" autocomplete="tel" placeholder="Ej. 55551234" required>
+        
+        <button type="submit" class="btn-obtener" id="btnObtener">Obtener</button>
+      </form>
+    </div>
+
+    <!-- VISTA 2: CUENTA REGRESIVA E IMAGEN DE PROMOCIÓN -->
+    <div id="pantalla-promo">
+      <h2>🎉 ¡Cupón Desbloqueado!</h2>
+      
+      <div class="timer-box">
+        <span>Tu cupón expira en:</span>
+        <div id="contador">05:00</div>
+      </div>
+
+      <!-- Aquí se cargará tu imagen -->
+      <img id="imagenCupon" class="promo-img" src="" alt="Cupón 15% de Descuento">
+
+      <div class="instruccion-captura">
+        📸 ¡Toma una captura de pantalla ahora o descarga tu cupón para canjearlo en caja!
+      </div>
+
+      <a id="btnDescargar" class="btn-descargar" href="" download="Cupon_15_Descuento.png">
+        ⬇️ Descargar Imagen del Cupón
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // 1. PEGA AQUÍ LA URL DE TU GOOGLE APPS SCRIPT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxN6Fqo__uUZkf3yjCbnOZ7wOYoLg5GrZ2WmS3aG1mcAFz22Zc56TOVgUNbbEVFJEnwTg/exec";
+    
+    // 2. PEGA AQUÍ EL NOMBRE DE TU IMAGEN (ej. "promocion.jpg") O SU URL
+    const IMAGEN_PROMOCION_URL = "promocion.jpg";
+
+    // 3. TIEMPO DE LA CUENTA REGRESIVA EN MINUTOS
+    const MINUTOS_CUENTA_REGRESIVA = 5;
+
+    const form = document.getElementById("formDescuento");
+    const btnObtener = document.getElementById("btnObtener");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      btnObtener.disabled = true;
+      btnObtener.textContent = "Desbloqueando...";
+
+      const telefonoIngresado = document.getElementById("telefono").value.trim();
+
+      // Enviar datos a Google Sheets
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          telefono: telefonoIngresado,
+          respuesta: "Solicitó 15% de descuento"
+        })
+      })
+      .finally(() => {
+        // Cargar la imagen en la vista 2
+        document.getElementById("imagenCupon").src = IMAGEN_PROMOCION_URL;
+        document.getElementById("btnDescargar").href = IMAGEN_PROMOCION_URL;
+
+        // Cambiar de pantalla
+        document.getElementById("pantalla-formulario").style.display = "none";
+        document.getElementById("pantalla-promo").style.display = "block";
+
+        // Iniciar cuenta regresiva
+        iniciarTemporizador(MINUTOS_CUENTA_REGRESIVA * 60);
+      });
+    });
+
+    function iniciarTemporizador(segundosTotales) {
+      const display = document.getElementById("contador");
+      let tiempo = segundosTotales;
+
+      const intervalo = setInterval(() => {
+        let minutos = Math.floor(tiempo / 60);
+        let segundos = tiempo % 60;
+
+        minutos = minutos < 10 ? "0" + minutos : minutos;
+        segundos = segundos < 10 ? "0" + segundos : segundos;
+
+        display.textContent = `${minutos}:${segundos}`;
+
+        if (--tiempo < 0) {
+          clearInterval(intervalo);
+          display.textContent = "¡TIEMPO AGOTADO!";
+          display.style.color = "#c0392b";
+        }
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>
