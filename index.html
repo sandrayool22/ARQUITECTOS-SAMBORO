@@ -1,209 +1,248 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¡Obtén tu 15% de Descuento!</title>
-  <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-    body {
-      background: linear-gradient(135deg, #1f2328 0%, #2c3e50 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 15px;
-    }
-    .card {
-      background: #ffffff;
-      padding: 28px 22px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-    h2 { margin: 0 0 10px; color: #1f2328; font-size: 24px; }
-    p.subtitulo { color: #555; font-size: 15px; margin-bottom: 20px; }
-    
-    /* Formulario */
-    label { display: block; text-align: left; font-weight: bold; color: #333; margin-bottom: 6px; font-size: 14px; }
-    input[type="tel"] {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 2px solid #ddd;
-      font-size: 18px;
-      text-align: center;
-      margin-bottom: 18px;
-      outline: none;
-    }
-    input[type="tel"]:focus { border-color: #25D366; }
-    
-    .btn-obtener {
-      width: 100%;
-      padding: 15px;
-      background: #25D366;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-      transition: transform 0.1s;
-    }
-    .btn-obtener:active { transform: scale(0.98); }
-    .btn-obtener:disabled { background: #95d5b2; cursor: not-allowed; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    /* Pantalla de Promoción y Cuenta Regresiva */
-    #pantalla-promo { display: none; }
-    .timer-box {
-      background: #fff3cd;
-      border: 2px dashed #ff9800;
-      color: #d35400;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-    .timer-box span { display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; }
-    #contador { font-size: 32px; font-weight: 900; letter-spacing: 2px; }
-    
-    .promo-img {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid #eee;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .instruccion-captura {
-      background: #e8f5e9;
-      color: #1b5e20;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-    .btn-descargar {
-      display: inline-block;
-      width: 100%;
-      padding: 12px;
-      background: #1f2328;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 15px;
-    }
-  </style>
+    <title>Registro de clientes | Samboro</title>
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 </head>
+
 <body>
 
-  <div class="card">
-    <!-- VISTA 1: PREGUNTA Y CAPTURA -->
-    <div id="pantalla-formulario">
-      <h2>🎁 ¿Quieres obtener el 15% de descuento?</h2>
-      <p class="subtitulo">Ingresa tu número de teléfono para desbloquear tu cupón exclusivo al instante.</p>
-      
-      <form id="formDescuento">
-        <label for="telefono">Tu número de WhatsApp / Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" autocomplete="tel" placeholder="Ej. 55551234" required>
-        
-        <button type="submit" class="btn-obtener" id="btnObtener">Obtener</button>
-      </form>
+<section class="section">
+    <div class="container">
+
+        <div class="has-text-centered mb-6">
+            <h1 class="title is-2 has-text-danger">
+                SAMBORO
+            </h1>
+
+            <h2 class="subtitle is-5">
+                Registro de visitantes
+            </h2>
+
+            <p class="has-text-grey">
+                Agradecemos tu visita. Completa la siguiente información
+                para brindarte una mejor atención.
+            </p>
+        </div>
+
+        <div class="columns is-centered">
+            <div class="column is-6">
+
+                <div class="box">
+
+                    <form id="formulario">
+
+                        <div class="field">
+                            <label class="label">Nombre completo</label>
+                            <div class="control">
+                                <input class="input"
+                                type="text"
+                                name="nombre"
+                                placeholder="Ingresa tu nombre"
+                                maxlength="100">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Número de teléfono</label>
+                            <div class="control">
+                                <input class="input"
+                                type="tel"
+                                name="telefono"
+                                placeholder="Ej. 55555555"
+                                pattern="[0-9+() -]{8,20}"
+                                maxlength="20"
+                                required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Tienda que visitas</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="tienda" required>
+                                        <option value="">Selecciona una tienda</option>
+                                        <option value="SCB">San Cristóbal</option>
+                                        <option value="CL">Centro Logístico</option>
+                                        <option value="Zona 7">Zona 7</option>
+                                        <option value="Zona 9">Zona 9</option>
+                                        <option value="Zona 11">Zona 11</option>
+                                        <option value="Zona 17">Zona 17</option>
+                                        <option value="Villa Nueva">Villa Nueva</option>
+                                        <option value="Decocity">Decocity</option>
+                                        <option value="Viterra">Viterra</option>
+                                        <option value="Zona 7 Outlet">Zona 7 Outlet</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Motivo de visita</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="motivo" required>
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="Compra">Compra</option>
+                                        <option value="Cotización">Cotización</option>
+                                        <option value="Consulta de productos">Consulta de productos</option>
+                                        <option value="Reclamo">Reclamo</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Producto de interés</label>
+                            <div class="control">
+                                <input class="input"
+                                type="text"
+                                name="producto"
+                                placeholder="Ej. Pisos, baños, fachaletas..."
+                                maxlength="150">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="checkbox">
+                                <input type="checkbox"
+                                name="consentimiento"
+                                value="si"
+                                required>
+
+                                Autorizo a Samboro a utilizar mis datos
+                                para fines de seguimiento comercial,
+                                conforme a su aviso de privacidad.
+                            </label>
+                        </div>
+
+                        <div class="field mt-5">
+                            <button class="button is-danger is-fullwidth"
+                            type="submit"
+                            id="btnEnviar">
+                                Aceptar y registrarme
+                            </button>
+                        </div>
+
+                    </form>
+
+                    <div id="mensaje"
+                    class="notification is-hidden mt-4">
+                    </div>
+
+                </div>
+
+                <p class="has-text-grey has-text-centered is-size-7 mt-4">
+                    Samboro | Registro de visitantes
+                </p>
+
+            </div>
+        </div>
+
     </div>
+</section>
 
-    <!-- VISTA 2: CUENTA REGRESIVA E IMAGEN DE PROMOCIÓN -->
-    <div id="pantalla-promo">
-      <h2>🎉 ¡Cupón Desbloqueado!</h2>
-      
-      <div class="timer-box">
-        <span>Tu cupón expira en:</span>
-        <div id="contador">05:00</div>
-      </div>
+<script>
 
-      <!-- Aquí se cargará tu imagen -->
-      <img id="imagenCupon" class="promo-img" src="" alt="Cupón 15% de Descuento">
+const URL_SCRIPT = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
 
-      <div class="instruccion-captura">
-        📸 ¡Toma una captura de pantalla ahora o descarga tu cupón para canjearlo en caja!
-      </div>
+const FECHA_LIMITE = "2026-11-30";
 
-      <a id="btnDescargar" class="btn-descargar" href="" download="Cupon_15_Descuento.png">
-        ⬇️ Descargar Imagen del Cupón
-      </a>
-    </div>
-  </div>
+const formulario = document.getElementById("formulario");
+const boton = document.getElementById("btnEnviar");
+const mensaje = document.getElementById("mensaje");
 
-  <script>
-    // 1. PEGA AQUÍ LA URL DE TU GOOGLE APPS SCRIPT
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxN6Fqo__uUZkf3yjCbnOZ7wOYoLg5GrZ2WmS3aG1mcAFz22Zc56TOVgUNbbEVFJEnwTg/exec";
-    
-    // 2. PEGA AQUÍ EL NOMBRE DE TU IMAGEN (ej. "promocion.jpg") O SU URL
-    const IMAGEN_PROMOCION_URL = "promocion.jpg";
+function fechaGuatemala() {
+    return new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Guatemala",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    }).format(new Date());
+}
 
-    // 3. TIEMPO DE LA CUENTA REGRESIVA EN MINUTOS
-    const MINUTOS_CUENTA_REGRESIVA = 5;
+function verificarVigencia() {
 
-    const form = document.getElementById("formDescuento");
-    const btnObtener = document.getElementById("btnObtener");
+    if (fechaGuatemala() > FECHA_LIMITE) {
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      btnObtener.disabled = true;
-      btnObtener.textContent = "Desbloqueando...";
+        formulario.classList.add("is-hidden");
 
-      const telefonoIngresado = document.getElementById("telefono").value.trim();
+        mensaje.className = "notification is-warning";
+        mensaje.textContent =
+            "El período de registro ha finalizado. " +
+            "Agradecemos tu interés en Samboro.";
 
-      // Enviar datos a Google Sheets
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          telefono: telefonoIngresado,
-          respuesta: "Solicitó 15% de descuento"
-        })
-      })
-      .finally(() => {
-        // Cargar la imagen en la vista 2
-        document.getElementById("imagenCupon").src = IMAGEN_PROMOCION_URL;
-        document.getElementById("btnDescargar").href = IMAGEN_PROMOCION_URL;
-
-        // Cambiar de pantalla
-        document.getElementById("pantalla-formulario").style.display = "none";
-        document.getElementById("pantalla-promo").style.display = "block";
-
-        // Iniciar cuenta regresiva
-        iniciarTemporizador(MINUTOS_CUENTA_REGRESIVA * 60);
-      });
-    });
-
-    function iniciarTemporizador(segundosTotales) {
-      const display = document.getElementById("contador");
-      let tiempo = segundosTotales;
-
-      const intervalo = setInterval(() => {
-        let minutos = Math.floor(tiempo / 60);
-        let segundos = tiempo % 60;
-
-        minutos = minutos < 10 ? "0" + minutos : minutos;
-        segundos = segundos < 10 ? "0" + segundos : segundos;
-
-        display.textContent = `${minutos}:${segundos}`;
-
-        if (--tiempo < 0) {
-          clearInterval(intervalo);
-          display.textContent = "¡TIEMPO AGOTADO!";
-          display.style.color = "#c0392b";
-        }
-      }, 1000);
+        return false;
     }
-  </script>
+
+    return true;
+}
+
+verificarVigencia();
+
+formulario.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    if (!verificarVigencia()) return;
+
+    if (!formulario.reportValidity()) return;
+
+    if (URL_SCRIPT.includes("PEGA_AQUI")) {
+
+        mensaje.className = "notification is-danger";
+        mensaje.textContent =
+            "La conexión con el sistema todavía no está configurada.";
+
+        return;
+    }
+
+    boton.classList.add("is-loading");
+    boton.disabled = true;
+
+    const datos = new URLSearchParams(
+        new FormData(formulario)
+    );
+
+    try {
+
+        await fetch(URL_SCRIPT, {
+            method: "POST",
+            body: datos,
+            mode: "no-cors"
+        });
+
+        mensaje.className = "notification is-success mt-4";
+        mensaje.textContent =
+            "Tu solicitud de registro fue enviada. " +
+            "Gracias por visitar Samboro.";
+
+        formulario.reset();
+
+    } catch (error) {
+
+        mensaje.className = "notification is-danger mt-4";
+        mensaje.textContent =
+            "No fue posible enviar tu registro. " +
+            "Por favor, intenta nuevamente.";
+
+    } finally {
+
+        boton.classList.remove("is-loading");
+        boton.disabled = false;
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
