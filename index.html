@@ -1,189 +1,277 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15% de Descuento - Arquitectura</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+    body {
+      background: linear-gradient(135deg, #181c20 0%, #2b3540 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 16px;
+    }
+    .card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #1b5e20;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    h2 { margin: 0 0 8px; color: #1a1d20; font-size: 23px; line-height: 1.25; }
+    p.subtitulo { color: #5f6672; font-size: 14px; margin: 0 0 20px; }
 
-    <title>Registro de clientes | Samboro</title>
-
-    <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-</head>
-
-<body>
-
-<section class="section">
-    <div class="container">
-
-        <div class="has-text-centered mb-5">
-            <h1 class="title is-2 has-text-danger">
-                SAMBORO
-            </h1>
-
-            <h2 class="subtitle">
-                Registro de visitantes
-            </h2>
-
-            <p>¡Bienvenido! Queremos brindarte una mejor atención.</p>
-        </div>
-
-        <div class="columns is-centered">
-            <div class="column is-6">
-
-                <div class="box">
-
-                    <form id="formulario">
-
-                        <div class="field">
-                            <label class="label">Nombre</label>
-                            <div class="control">
-                                <input class="input"
-                                type="text"
-                                name="nombre"
-                                placeholder="Ingresa tu nombre">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label">Número de teléfono</label>
-                            <div class="control">
-                                <input class="input"
-                                type="tel"
-                                name="telefono"
-                                placeholder="Ej. 55555555"
-                                pattern="[0-9+() -]{8,20}"
-                                required>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label">Tienda que visitas</label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                    <select name="tienda" required>
-                                        <option value="">Selecciona una tienda</option>
-                                        <option>San Cristóbal</option>
-                                        <option>Centro Logístico</option>
-                                        <option>Zona 7</option>
-                                        <option>Zona 9</option>
-                                        <option>Zona 11</option>
-                                        <option>Zona 17</option>
-                                        <option>Villa Nueva</option>
-                                        <option>Decocity</option>
-                                        <option>Viterra</option>
-                                        <option>Zona 7 Outlet</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label">Motivo de visita</label>
-                            <div class="control">
-                                <div class="select is-fullwidth">
-                                    <select name="motivo" required>
-                                        <option value="">Selecciona una opción</option>
-                                        <option>Compra</option>
-                                        <option>Cotización</option>
-                                        <option>Consulta de productos</option>
-                                        <option>Reclamo</option>
-                                        <option>Otro</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label">Producto de interés</label>
-                            <div class="control">
-                                <input class="input"
-                                type="text"
-                                name="producto"
-                                placeholder="Ej. Pisos, baños, fachaletas...">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="checkbox">
-                                <input type="checkbox"
-                                name="consentimiento"
-                                value="si"
-                                required>
-                                Autorizo a Samboro a utilizar mis datos
-                                para seguimiento comercial, conforme al
-                                aviso de privacidad.
-                            </label>
-                        </div>
-
-                        <div class="field mt-5">
-                            <button class="button is-danger is-fullwidth"
-                            type="submit"
-                            id="btnEnviar">
-                                Aceptar y registrarme
-                            </button>
-                        </div>
-
-                    </form>
-
-                    <div id="mensaje" class="notification is-hidden mt-4"></div>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<script>
-
-const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxN6Fqo__uUZkf3yjCbnOZ7wOYoLg5GrZ2WmS3aG1mcAFz22Zc56TOVgUNbbEVFJEnwTg/exec";
-
-const formulario = document.getElementById("formulario");
-const boton = document.getElementById("btnEnviar");
-const mensaje = document.getElementById("mensaje");
-
-formulario.addEventListener("submit", async function(e) {
-
-    e.preventDefault();
-
-    boton.classList.add("is-loading");
-    boton.disabled = true;
-
-    const datos = new URLSearchParams(
-        new FormData(formulario)
-    );
-
-    try {
-
-        await fetch(URL_SCRIPT, {
-            method: "POST",
-            body: datos,
-            mode: "no-cors"
-        });
-
-        mensaje.className = "notification is-success mt-4";
-        mensaje.textContent =
-            "¡Gracias! Tu registro ha sido enviado.";
-
-        formulario.reset();
-
-    } catch (error) {
-
-        mensaje.className = "notification is-danger mt-4";
-        mensaje.textContent =
-            "No se pudo enviar el registro. Intenta nuevamente.";
-
-    } finally {
-
-        boton.classList.remove("is-loading");
-        boton.disabled = false;
-
+    /* Campos del Formulario */
+    .campo { text-align: left; margin-bottom: 16px; }
+    label { display: block; font-weight: 600; color: #2d333b; margin-bottom: 6px; font-size: 14px; }
+    input[type="tel"], select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #d0d7de;
+      font-size: 16px;
+      color: #1f2328;
+      background-color: #f8f9fa;
+      outline: none;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    input[type="tel"]:focus, select:focus {
+      border-color: #1f2328;
+      background-color: #ffffff;
     }
 
-});
+    .btn-obtener {
+      width: 100%;
+      padding: 15px;
+      background: #1f2328;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 6px;
+      box-shadow: 0 4px 14px rgba(31, 35, 40, 0.25);
+      transition: transform 0.1s, background 0.2s;
+    }
+    .btn-obtener:hover { background: #32383f; }
+    .btn-obtener:active { transform: scale(0.98); }
+    .btn-obtener:disabled { background: #8c959f; cursor: not-allowed; }
 
-</script>
+    /* Vista 2: Promoción, Temporizador y Botón WhatsApp */
+    #pantalla-promo { display: none; }
+    
+    .timer-box {
+      background: #fff8e1;
+      border: 1.5px dashed #f59e0b;
+      color: #b45309;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+    .timer-box span { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    #contador { font-size: 30px; font-weight: 900; letter-spacing: 2px; margin-top: 2px; }
+
+    .promo-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .instruccion-captura {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    /* Botones de Acción Final */
+    .acciones { display: flex; flex-direction: column; gap: 10px; }
+    
+    .btn-whatsapp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      background: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+    }
+    .btn-whatsapp:hover { background: #20bd5a; }
+
+    .btn-descargar {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #ffffff;
+      color: #1f2328;
+      border: 1.5px solid #1f2328;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .btn-descargar:hover { background: #f8f9fa; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- VISTA 1: ENCUESTA BREVE + CAPTURA -->
+    <div id="pantalla-formulario">
+      <span class="badge">Beneficio Exclusivo</span>
+      <h2>¿Quieres obtener el 15% de descuento?</h2>
+      <p class="subtitulo">Completa estos 2 datos rápidos para desbloquear tu cupón al instante.</p>
+      
+      <form id="formDescuento">
+        <div class="campo">
+          <label for="telefono">1. Tu número de teléfono / WhatsApp:</label>
+          <input type="tel" id="telefono" name="telefono" autocomplete="tel" placeholder="Ej. 55551234" required>
+        </div>
+
+        <div class="campo">
+          <label for="sector">2. ¿A qué sector de la arquitectura te dedicas?</label>
+          <select id="sector" name="sector" required>
+            <option value="" disabled selected>Selecciona una opción...</option>
+            <option value="Arquitectura Residencial">Arquitectura Residencial</option>
+            <option value="Arquitectura Comercial / Corporativa">Arquitectura Comercial / Corporativa</option>
+            <option value="Diseño de Interiores">Diseño de Interiores</option>
+            <option value="Construcción y Remodelación">Construcción y Remodelación</option>
+            <option value="Paisajismo y Urbanismo">Paisajismo y Urbanismo</option>
+            <option value="Estudiante / Independiente">Estudiante / Independiente</option>
+            <option value="Otro sector">Otro sector</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn-obtener" id="btnObtener">Obtener 15% de Descuento</button>
+      </form>
+    </div>
+
+    <!-- VISTA 2: CUENTA REGRESIVA + IMAGEN + ASESOR WHATSAPP -->
+    <div id="pantalla-promo">
+      <h2>🎉 ¡Cupón Desbloqueado!</h2>
+      
+      <div class="timer-box">
+        <span>Válido para captura o descarga en:</span>
+        <div id="contador">05:00</div>
+      </div>
+
+      <img id="imagenCupon" class="promo-img" src="" alt="Cupón 15% de Descuento">
+
+      <div class="instruccion-captura">
+        📸 Toma una captura de pantalla o descarga la imagen para hacer válido tu descuento.
+      </div>
+
+      <div class="acciones">
+        <a id="btnWhatsapp" class="btn-whatsapp" href="#" target="_blank">
+          💬 Canjear con un Asesor por WhatsApp
+        </a>
+        <a id="btnDescargar" class="btn-descargar" href="" download="Cupon_15_Descuento.jpg">
+          ⬇️ Descargar Imagen del Cupón
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURACIÓN
+    // ==========================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxN6Fqo__uUZkf3yjCbnOZ7wOYoLg5GrZ2WmS3aG1mcAFz22Zc56TOVgUNbbEVFJEnwTg/exec";
+    const IMAGEN_PROMOCION_URL = "promocion.jpg"; // Nombre de tu imagen en la misma carpeta
+    const TELEFONO_ASESOR = "50255551234"; // Código de país + número del asesor (sin + ni espacios)
+    const MINUTOS_CUENTA_REGRESIVA = 5;
+    // ==========================================
+
+    const form = document.getElementById("formDescuento");
+    const btnObtener = document.getElementById("btnObtener");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      btnObtener.disabled = true;
+      btnObtener.textContent = "Desbloqueando cupón...";
+
+      const telefonoCliente = document.getElementById("telefono").value.trim();
+      const sectorSeleccionado = document.getElementById("sector").value;
+
+      // 1. Enviar datos a Google Sheets
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          telefono: telefonoCliente,
+          sector: sectorSeleccionado
+        })
+      })
+      .finally(() => {
+        // 2. Configurar imagen y descarga
+        document.getElementById("imagenCupon").src = IMAGEN_PROMOCION_URL;
+        document.getElementById("btnDescargar").href = IMAGEN_PROMOCION_URL;
+
+        // 3. Configurar enlace de WhatsApp personalizado con el sector elegido
+        const mensajeWA = `Hola, acabo de desbloquear mi cupón del 15% de descuento. Me dedico al sector de: ${sectorSeleccionado}. Quisiera asesoría.`;
+        const urlWA = `https://wa.me/${TELEFONO_ASESOR}?text=${encodeURIComponent(mensajeWA)}`;
+        document.getElementById("btnWhatsapp").href = urlWA;
+
+        // 4. Cambiar de pantalla e iniciar reloj
+        document.getElementById("pantalla-formulario").style.display = "none";
+        document.getElementById("pantalla-promo").style.display = "block";
+        iniciarTemporizador(MINUTOS_CUENTA_REGRESIVA * 60);
+      });
+    });
+
+    function iniciarTemporizador(segundosTotales) {
+      const display = document.getElementById("contador");
+      let tiempo = segundosTotales;
+
+      const intervalo = setInterval(() => {
+        let minutos = Math.floor(tiempo / 60);
+        let segundos = tiempo % 60;
+
+        minutos = minutos < 10 ? "0" + minutos : minutos;
+        segundos = segundos < 10 ? "0" + segundos : segundos;
+
+        display.textContent = `${minutos}:${segundos}`;
+
+        if (--tiempo < 0) {
+          clearInterval(intervalo);
+          display.textContent = "¡TIEMPO AGOTADO!";
+          display.style.color = "#dc2626";
+        }
+      }, 1000);
+    }
+  </script>
 
 </body>
 </html>
